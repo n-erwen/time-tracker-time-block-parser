@@ -1,12 +1,12 @@
-from lib.datetime_utils import DATETIME_DATE_FORMAT, DATETIME_ISO_FORMAT, get_date_as_datetime, get_timedelta_as_minutes
+from lib.datetime_utils import DATETIME_DATE_FORMAT, get_date_as_datetime, get_timedelta_as_minutes
 
 
 def get_time_block_as_csv_row(time_block):
     row_data = [
         time_block.id or '',
         time_block.date.strftime(DATETIME_DATE_FORMAT),
-        time_block.start.strftime(DATETIME_ISO_FORMAT) if time_block.start else '',
-        time_block.end.strftime(DATETIME_ISO_FORMAT) if time_block.end else '',
+        time_block.start.isoformat() if time_block.start else '',
+        time_block.end.isoformat() if time_block.end else '',
         str(int(get_timedelta_as_minutes(time_block.duration))) if time_block.duration is not None else '',
         time_block.description,
         ' '.join(time_block.tags) if time_block.tags else '',

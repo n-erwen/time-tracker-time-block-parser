@@ -1,6 +1,6 @@
 import csv
 import datetime
-from lib.datetime_utils import DATETIME_DATE_FORMAT, DATETIME_ISO_FORMAT
+from lib.datetime_utils import DATETIME_DATE_FORMAT, TIMEZONE
 from lib.parsers._abstract import Parser
 from lib.TimeBlock import TimeBlock
 
@@ -12,8 +12,10 @@ class CSVFileParser(Parser):
         for row in reader:
             time_blocks.append(TimeBlock(
                 datetime.datetime.strptime(row['date'], DATETIME_DATE_FORMAT).date(),
-                datetime.datetime.strptime(row['start'], DATETIME_ISO_FORMAT) if row['start'] else None,
-                datetime.datetime.strptime(row['end'], DATETIME_ISO_FORMAT) if row['end'] else None,
+                datetime.datetime.fromisoformat(row['start']).replace(tzinfo=TIMEZONE)
+                if row['start'] else None,
+                datetime.datetime.fromisoformat(row['end']).replace(tzinfo=TIMEZONE)
+                if row['end'] else None,
                 row['description'],
                 row['details'],
                 row['tags'].split(' '),

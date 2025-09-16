@@ -1,6 +1,6 @@
 import datetime
 import re
-from lib.datetime_utils import DATETIME_DATE_FORMAT, get_datetime
+from lib.datetime_utils import DATETIME_DATE_FORMAT, combine_date_and_time
 from lib.parsers._abstract import Parser
 from lib.TimeBlock import TimeBlock
 from lib.utils import LogLevel, write_to_log_file
@@ -98,8 +98,8 @@ class MarkdownTaskListParser(Parser):
         return (
             TimeBlock(
                 datetime.datetime.strptime(date_str, DATETIME_DATE_FORMAT).date(),
-                get_datetime(date_str, start_time_str) if start_time_str else None,
-                get_datetime(date_str, end_time_str) if end_time_str else None,
+                combine_date_and_time(date_str, start_time_str) if start_time_str else None,
+                combine_date_and_time(date_str, end_time_str) if end_time_str else None,
                 description.replace(cls.TIME_BLOCK_TAG, '').strip() if description else '',
                 details if details else '',
                 tags,

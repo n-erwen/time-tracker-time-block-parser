@@ -1,13 +1,18 @@
 import datetime
+from zoneinfo import ZoneInfo
 
 DATETIME_DATE_FORMAT = '%Y-%m-%d'
 DATETIME_TIME_FORMAT = '%H:%M'
-DATETIME_ISO_FORMAT = "%Y-%m-%dT%H:%M:%S"
+TIMEZONE = ZoneInfo('Europe/London')
 
 
-def get_datetime(date_str, time_str):
+def combine_date_and_time(date_str, time_str):
     try:
-        return datetime.datetime.strptime(date_str + ' ' + time_str, DATETIME_DATE_FORMAT + ' ' + DATETIME_TIME_FORMAT)
+        return (
+            datetime.datetime
+            .strptime(date_str + ' ' + time_str, DATETIME_DATE_FORMAT + ' ' + DATETIME_TIME_FORMAT)
+            .replace(tzinfo=TIMEZONE)
+            )
     except ValueError:
         return None
 

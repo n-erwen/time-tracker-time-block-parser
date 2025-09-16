@@ -1,7 +1,7 @@
 import datetime
 import unittest
 
-from .klog import KlogFileParser
+from lib.parsers.klog import KlogFileParser
 
 
 class TestKlogFileParser(unittest.TestCase):
@@ -29,23 +29,3 @@ Record Description
         self.assertEqual(time_block.details, 'details')
         self.assertEqual(time_block.duration, datetime.timedelta(minutes=17))
         self.assertEqual(time_block.break_duration, datetime.timedelta(minutes=4))
-
-    def test_valid_single_record_with_longer_description(self):
-        test_input = """2025-09-08 (7h!)
-Record Description
-    13:14-13:31 test #nested=tag #tag2
-        longer description
-    -4m break"""
-
-    def test_valid_single_record_with_single_break(self):
-        test_input = """2025-09-08 (7h!)
-Record Description
-    13:14-13:31 test #nested=tag #tag2
-    -4m break"""
-
-    def test_valid_single_record_with_multiple_breaks(self):
-        test_input = """2025-09-08 (7h!)
-Record Description
-    13:14-13:31 test #nested=tag #tag2
-    -4m break
-    -5m break"""

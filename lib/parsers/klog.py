@@ -1,6 +1,6 @@
 import datetime
 import re
-from lib.datetime_utils import DATETIME_DATE_FORMAT, get_datetime
+from lib.datetime_utils import DATETIME_DATE_FORMAT, combine_date_and_time
 from lib.parsers._abstract import Parser
 from lib.TimeBlock import TimeBlock
 
@@ -49,8 +49,8 @@ class KlogFileParser(Parser):
                 description = description.replace(tag, tag.replace('=', '/'))
             return TimeBlock(
                 datetime.datetime.strptime(date_str, DATETIME_DATE_FORMAT).date(),
-                get_datetime(date_str, match.group(1)),
-                get_datetime(date_str, match.group(2)) if match.group(2) != '?' else None,
+                combine_date_and_time(date_str, match.group(1)),
+                combine_date_and_time(date_str, match.group(2)) if match.group(2) != '?' else None,
                 description
             )
 
