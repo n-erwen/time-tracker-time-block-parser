@@ -17,8 +17,9 @@ class JSONFileParser(Parser):
                 row['description'],
                 row['details'],
                 row['tags'],
-                row['duration_mins'] if row['duration_mins'] else None,
+                row['duration_mins'] or None,
                 row['break_duration_mins'],
-                row['completed']
+                row['completed'],
+                row['id'] or None,
             ))
         return time_blocks

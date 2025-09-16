@@ -3,6 +3,7 @@ from lib.datetime_utils import DATETIME_DATE_FORMAT, DATETIME_ISO_FORMAT, get_da
 
 def get_time_block_as_csv_row(time_block):
     row_data = [
+        time_block.id or '',
         time_block.date.strftime(DATETIME_DATE_FORMAT),
         time_block.start.strftime(DATETIME_ISO_FORMAT) if time_block.start else '',
         time_block.end.strftime(DATETIME_ISO_FORMAT) if time_block.end else '',
@@ -19,7 +20,7 @@ def get_time_block_as_csv_row(time_block):
 def format_time_blocks_to_csv(time_blocks):
     csv_out_str = ''
     header_list = [
-        'date', 'start', 'end', 'duration_mins', 'description',
+        'id', 'date', 'start', 'end', 'duration_mins', 'description',
         'tags', 'details', 'break_duration_mins', 'completed'
     ]
     csv_out_str += ','.join(['"' + header + '"' for header in header_list])

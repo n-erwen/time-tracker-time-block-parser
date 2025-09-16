@@ -11,6 +11,7 @@ def format_time_blocks_to_json(time_blocks, separate_date_and_time=False):
     sorted_time_blocks = sorted(time_blocks, key=lambda t: t.start or get_date_as_datetime(t.date))
     for t in sorted_time_blocks:
         t_dict = {
+            'id': t.id,
             'date': t.date.strftime(DATETIME_DATE_FORMAT),
             'start': t.start.isoformat() if t.start else None,
             'end': t.end.isoformat() if t.end else None,

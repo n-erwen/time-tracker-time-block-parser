@@ -5,9 +5,10 @@ from lib.datetime_utils import DATETIME_DATE_FORMAT, DATETIME_TIME_FORMAT, get_t
 
 class TimeBlock:
     def __init__(self, date, start=None, end=None, description='', details='',
-                 tags=None, duration_mins=None, break_mins=0, completed=None):
+                 tags=None, duration_mins=None, break_mins=0, completed=None, id=None):
         if tags is None:
             tags = []
+        self.id = id
         self.date = date
         self.start = start
         self.end = end or self.calculate_end_time(self.start, duration_mins)
@@ -36,7 +37,8 @@ class TimeBlock:
                 + 'details="' + self.details + '", '
                 + 'tags=[' + ','.join(['"' + tag + '"' for tag in self.tags]) + '],'
                 + 'break_duration="' + str(self.break_duration) + '", '
-                + 'completed=' + ('True' if self.completed else 'False') + ')'
+                + 'completed=' + ('True' if self.completed else 'False') + ', '
+                + 'id=' + ('"' + str(self.id) + '"' if self.id else '') + ')'
         )
 
     @staticmethod

@@ -19,6 +19,7 @@ class CSVFileParser(Parser):
                 row['tags'].split(' '),
                 int(row['duration_mins']) if row['duration_mins'] else None,
                 int(row['break_duration_mins']),
-                bool(row['completed'])
+                bool(row['completed']),
+                row['id'] or None
             ))
         return time_blocks
