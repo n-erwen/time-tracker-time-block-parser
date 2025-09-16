@@ -43,7 +43,7 @@ class TimeBlockFormatter:
             out_str = format_time_blocks_to_csv(self.time_blocks)
 
         elif out_format == 'json':
-            out_str = format_time_blocks_to_json(self.time_blocks, separate_date_and_time=False)
+            out_str = format_time_blocks_to_json(self.time_blocks)
 
         elif out_format == 'klog':
             out_str = format_time_blocks_to_klog(self.time_blocks, reverse_date_order=False)
