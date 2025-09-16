@@ -1,0 +1,4 @@
+**/__pycache__/
+.idea/
+time_blocks.db
+log*.txt
