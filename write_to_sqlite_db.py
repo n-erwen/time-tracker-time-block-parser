@@ -30,7 +30,8 @@ completed BOOLEAN NOT NULL CHECK (mycolumn IN (0, 1))
 )""")
     cursor.execute("""CREATE TABLE IF NOT EXISTS tag(
 id INTEGER PRIMARY KEY AUTOINCREMENT,
-name TEXT NOT NULL
+name TEXT NOT NULL,
+UNIQUE(name)
 )""")
     cursor.execute("""CREATE TABLE IF NOT EXISTS time_block_tag(
 time_block_id INTEGER,
@@ -39,20 +40,27 @@ FOREIGN KEY(time_block_id) REFERENCES time_block(id),
 FOREIGN KEY(tag_id) REFERENCES tag(id)
 )""")
 
+def get_row_values_as_sql_str(row):
+    values = [
+        '"' + row['date'] + '"',
+        '"' + row['start'] + '"' if row['start'] else 'NULL',
+        '"' + row['end'] + '"' if row['end'] else 'NULL',
+        row['duration_mins'] if row['duration_mins'] else 'NULL',
+        '"' + row['description'] + '"',
+        '"' + row['details'] + '"',
+        row['break_duration_mins'],
+        row['completed']
+    ]
+    return ', '.join(values)
+
 
 def insert_time_block_record(connection, row):
     cursor = connection.cursor()
-    query = f"""INSERT INTO time_block(
-start_timestamp, end_timestamp, duration_mins, 
+    row_values = get_row_values_as_sql_str(row)
+    query = f"""INSERT OR REPLACE INTO time_block(
+date, start_timestamp, end_timestamp, duration_mins, 
 description, details, break_duration_mins, completed
-) VALUES (\"{row['date']}\", 
-{'"' + row['start'] + '"' if row['start'] else 'NULL'}, 
-{'"' + row['end'] + '"' if row['end'] else 'NULL'}, 
-{row['duration_mins'] if row['duration_mins'] else 'NULL'}, 
-\"{row['description']}\",
-\"{row['details']}\",
-{row['break_duration_mins']}, 
-{row['completed']})"""
+) VALUES ({row_values})"""
     cursor.execute(query)
     return cursor.lastrowid
 
@@ -92,6 +100,20 @@ def insert_records(connection, csv_dict_reader):
     except Exception as e:
         db_conn.rollback()
         raise e
+
+#   get all ids of existing rows in time_block
+#   filter rows from csv where id is in existing rows
+#   filter rows from csv where id is not in existing rows
+#   update all existing rows
+#   insert all non existing rows
+#   get all tags
+#   insert on conflict ignore for all tags
+#   get all time block tag id associations
+#   for each record
+#     filter csv tags for tags which dont exist in associations
+#     insert those tags
+#     filter associations for tags which dont exist in csv
+#     delete those tags
 
 
 if __name__ == '__main__':
