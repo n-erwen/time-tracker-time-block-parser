@@ -18,7 +18,7 @@ def combine_date_and_time(date_str, time_str):
 
 
 def get_date_as_datetime(date):
-    return datetime.datetime.combine(date, datetime.time(0, 0, 0))
+    return datetime.datetime.combine(date, datetime.time(0, 0, 0), tzinfo=TIMEZONE)
 
 
 def get_timedelta_as_hours(timedelta):
